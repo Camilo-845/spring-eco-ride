@@ -2,6 +2,8 @@
 
 Plataforma de **carpooling corporativo**: conductores (empleados) publican rutas y asientos disponibles; pasajeros (empleados) reservan; el sistema cobra un monto simbólico por trayecto y coordina notificaciones. Solución **reactiva, segura y escalable**.
 
+[problem requirements](./requirements.md)
+
 ## Stack Tecnológico
 
 - **Spring Cloud**: Gateway, OpenFeign, Config, Eureka, Resilience4j, Sleuth/Micrometer.

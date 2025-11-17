@@ -1,0 +1,6 @@
+server:
+  port: ${API_GATEWAY_PORT}
+
+spring:
+  application:
+    name: api-gateway

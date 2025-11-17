@@ -1,5 +1,5 @@
 services:
-  config-service:
+  config-server:
     build:
       context: ./config-service
     container_name: config-service
@@ -7,3 +7,14 @@ services:
       - "${CONFIG_SERVICE_PORT}:${CONFIG_SERVICE_PORT}"
     environment:
       CONFIG_SERVER_PORT: ${CONFIG_SERVICE_PORT}
+  api-gateway:
+    build:
+      context: ./api-gateway/
+    container_name: api-gateway
+    ports:
+      - "${API_GATEWAY_PORT}:${API_GATEWAY_PORT}"
+    environment:
+      CONFIG_SERVER_PORT: ${CONFIG_SERVICE_PORT}
+      API_GATEWAY_PORT: ${API_GATEWAY_PORT}
+    depends_on:
+      - config-server

@@ -1,0 +1,9 @@
+services:
+  config-service:
+    build:
+      context: ./config-service
+    container_name: config-service
+    ports:
+      - "${CONFIG_SERVICE_PORT}:${CONFIG_SERVICE_PORT}"
+    environment:
+      CONFIG_SERVER_PORT: ${CONFIG_SERVICE_PORT}

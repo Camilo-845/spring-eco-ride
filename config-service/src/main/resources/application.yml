@@ -1,0 +1,17 @@
+server:
+  port: ${CONFIG_SERVER_PORT}
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active:
+      - native
+
+  cloud:
+    config:
+      enabled: true
+      server:
+        native:
+          search-locations:
+            - classpath:/configurations

@@ -22,7 +22,21 @@ Plataforma de **carpooling corporativo**: conductores (empleados) publican rutas
     ```
 
 2.  **Levantar Microservicios y servicios de infraestructura**:
-
     ```bash
     docker-compose up -d --build
     ```
+
+## Uso de instancias de desarrollo
+
+Para hacer pruebas en local de forma más rapida que la construcción del docker-compose por defecto
+
+1. Ejecutar build de todos los servicios
+
+   ```bash
+   ./devTools/build-all-modules.sh
+   ```
+
+2. Ejecutar docker-compose dedicado para dev
+   ```bash
+   docker compose -f ./docker-compose.dev.yml up
+   ```

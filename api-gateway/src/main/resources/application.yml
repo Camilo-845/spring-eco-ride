@@ -2,4 +2,4 @@ spring:
   application:
     name: api-gateway
   config:
-    import: optional:configserver:http://config-server:${CONFIG_SERVER_PORT}/api-gateway.yml
+    import: configserver:${CONFIG_SERVER_URI}

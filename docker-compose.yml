@@ -2,11 +2,11 @@ services:
   config-server:
     build:
       context: ./config-service
-    container_name: config-service
+    container_name: config-server
     ports:
-      - "${CONFIG_SERVICE_PORT}:${CONFIG_SERVICE_PORT}"
+      - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
     environment:
-      CONFIG_SERVER_PORT: ${CONFIG_SERVICE_PORT}
+      CONFIG_SERVER_PORT: ${CONFIG_SERVER_PORT}
   api-gateway:
     build:
       context: ./api-gateway/
@@ -14,11 +14,14 @@ services:
     ports:
       - "${API_GATEWAY_PORT}:${API_GATEWAY_PORT}"
     environment:
-      CONFIG_SERVER_PORT: ${CONFIG_SERVICE_PORT}
+      CONFIG_SERVER_URI: "http://config-server:${CONFIG_SERVER_PORT}"
       API_GATEWAY_PORT: ${API_GATEWAY_PORT}
       KC_REALM_URI: "http://keycloak:${KC_PORT}/realms/ecoride"
     depends_on:
-      - config-server
+      config-server:
+        condition: service_started
+      keycloak:
+        condition: service_healthy
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
@@ -31,6 +34,8 @@ services:
       KC_DB_PASSWORD: ${KC_DB_PASS}
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      KC_HTTP_MANAGEMENT_PORT: ${KC_HTTP_MANAGEMENT_PORT}
+      KC_HEALTH_ENABLED: true
       # Variables for realm substitution
       GATEWAY_REDIRECT_URL_1: ${GATEWAY_REDIRECT_URL_1}
       GATEWAY_REDIRECT_URL_2: ${GATEWAY_REDIRECT_URL_2}
@@ -41,6 +46,23 @@ services:
       - ./keycloak/entrypoint.sh:/opt/keycloak/bin/entrypoint.sh
     ports:
       - "${KC_PORT}:${KC_PORT}"
+      - "${KC_HTTP_MANAGEMENT_PORT}:${KC_HTTP_MANAGEMENT_PORT}"
+    healthcheck:
+      test: [
+          "CMD-SHELL",
+          "exec 3<>/dev/tcp/localhost/${KC_HTTP_MANAGEMENT_PORT:?}; \
+          echo -en 'GET /health/ready' >&3; \
+          # Give the server a moment to respond, then search for 'UP'
+          if timeout 3 cat <&3 | grep -m 1 'UP'; then \
+          exec 3<&-; exec 3>&-; exit 0; \
+          else \
+          exec 3<&-; exec 3>&-; exit 1; \
+          fi",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 7
+      start_period: 40s
     depends_on:
       - keycloak-db
 

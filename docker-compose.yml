@@ -16,6 +16,7 @@ services:
     environment:
       CONFIG_SERVER_PORT: ${CONFIG_SERVICE_PORT}
       API_GATEWAY_PORT: ${API_GATEWAY_PORT}
+      KC_REALM_URI: "http://keycloak:${KC_PORT}/realms/ecoride"
     depends_on:
       - config-server
   keycloak:

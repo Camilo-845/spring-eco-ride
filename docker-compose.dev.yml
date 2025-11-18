@@ -21,3 +21,39 @@ services:
       API_GATEWAY_PORT: ${API_GATEWAY_PORT}
     depends_on:
       - config-server
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    entrypoint: /opt/keycloak/bin/entrypoint.sh
+    environment:
+      KC_HTTP_PORT: ${KC_PORT}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:${KC_DB_PORT}/${KC_DB_NAME}
+      KC_DB_USERNAME: ${KC_DB_USER}
+      KC_DB_PASSWORD: ${KC_DB_PASS}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      # Variables for realm substitution
+      GATEWAY_REDIRECT_URL_1: ${GATEWAY_REDIRECT_URL_1}
+      GATEWAY_REDIRECT_URL_2: ${GATEWAY_REDIRECT_URL_2}
+      INTERNAL_REDIRECT_URL: ${INTERNAL_REDIRECT_URL}
+      ECO_INTERNAL_SECRET: ${ECO_INTERNAL_SECRET}
+    volumes:
+      - ./keycloak/realm-ecoride.json.tpl:/opt/keycloak/conf/realm-ecoride.json.tpl
+      - ./keycloak/entrypoint.sh:/opt/keycloak/bin/entrypoint.sh
+    ports:
+      - "${KC_PORT}:${KC_PORT}"
+    depends_on:
+      - keycloak-db
+
+  keycloak-db:
+    image: postgres:15
+    container_name: keycloak-db
+    environment:
+      POSTGRES_DB: ${KC_DB_NAME}
+      POSTGRES_USER: ${KC_DB_USER}
+      POSTGRES_PASSWORD: ${KC_DB_PASS}
+    volumes:
+      - keycloak_data:/var/lib/postgresql/data
+volumes:
+  keycloak_data:

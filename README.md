@@ -62,13 +62,14 @@ Para probar los endpoints protegidos en desarrollo se debe obtener las credencia
 La petición para obtener las creadenciales es:
 
 ```sh
-curl -X POST 'http://localhost:8090/realms/ecoride/protocol/openid-connect/token' \
-  --header 'Content-Type: application/x-www-form-urlencoded' \
-  --data 'client_id=eco-gateway' \
-  --data 'client_secret=[Client Secret]' \
-  --data 'username=[Username]' \
-  --data 'password=[Password]' \
-  --data 'grant_type=password'
+docker run --rm --network eco-ride_microservices_default curlimages/curl \
+curl -X POST 'http://keycloak:8090/realms/ecoride/protocol/openid-connect/token' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'client_id=eco-gateway' \
+  -d 'client_secret=bPWeM8cfy92FaPtv9OjV8BHsLvA8tp3x' \
+  -d 'username=NewUser' \
+  -d 'password=password' \
+  -d 'grant_type=password'
 ```
 
 Teniendo un usuario previamente creado se pude remplazar los datos de la consulta y obtener los tokens

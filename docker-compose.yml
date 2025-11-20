@@ -100,18 +100,14 @@ services:
     image: postgres:15
     container_name: payment-service-db
     environment:
-      POSTGRES_PORT: ${PAYMENT_SERVICE_DB_PORT}
       POSTGRES_DB: ${PAYMENT_SERVICE_DB_NAME}
       POSTGRES_USER: ${PAYMENT_SERVICE_DB_USER}
       POSTGRES_PASSWORD: ${PAYMENT_SERVICE_DB_PASS}
-    command: -p ${PAYMENT_SERVICE_DB_PORT}
-    expose:
-      - "${PAYMENT_SERVICE_DB_PORT}"
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${PAYMENT_SERVICE_DB_USER} -d ${PAYMENT_SERVICE_DB_NAME} -p ${PAYMENT_SERVICE_DB_PORT}",
+          "pg_isready -U ${PAYMENT_SERVICE_DB_USER} -d ${PAYMENT_SERVICE_DB_NAME}",
         ]
       interval: 5s
       timeout: 5s

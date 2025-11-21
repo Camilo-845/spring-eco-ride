@@ -8,6 +8,7 @@ import com.example.payment_service.dto.request.CreatePaymentIntent;
 import com.example.payment_service.dto.response.PaymentIntentResponse;
 import com.example.payment_service.mapper.PaymentIntentMapper;
 import com.example.payment_service.model.PaymentIntent;
+import com.example.payment_service.model.PaymentStatus;
 import com.example.payment_service.repository.PaymentIntentRepository;
 import com.example.payment_service.service.PaymentIntentService;
 

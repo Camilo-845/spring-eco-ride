@@ -13,7 +13,7 @@ CREATE TYPE charge_status AS ENUM (
     'FAILED'
 );
 
-CREATE TABLE IF NOT EXISTS PaymentsIntents (
+CREATE TABLE IF NOT EXISTS payments_intents (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   reservation_id UUID NOT NULL, -- Recomendación: usar snake_case para columnas
   amount DECIMAL(10, 2) NOT NULL,
@@ -23,16 +23,16 @@ CREATE TABLE IF NOT EXISTS PaymentsIntents (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Charges(
+CREATE TABLE IF NOT EXISTS charges(
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  payment_intent_id UUID NOT NULL REFERENCES PaymentsIntents(id) ON DELETE CASCADE,
-  amount DECIMAL(10, 2) NOT NULL,
-  currency VARCHAR(3) NOT NULL,
-  status charge_status NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  payment_intent_id UUID NOT NULL REFERENCES payments_intents(id) ON DELETE CASCADE,
+  provider VARCHAR(20) NOT NULL,
+  provider_ref VARCHAR(50) NOT NULL,
+  charge_status charge_status NOT NULL,
+  captured_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Refunds(
+CREATE TABLE IF NOT EXISTS refunds(
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   charge_id UUID NOT NULL REFERENCES Charges(id) ON DELETE CASCADE,
   amount DECIMAL(10, 2) NOT NULL,

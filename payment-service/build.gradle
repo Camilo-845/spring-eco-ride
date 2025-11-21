@@ -25,6 +25,8 @@ dependencies {
   implementation 'org.postgresql:r2dbc-postgresql'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
+  implementation 'jakarta.validation:jakarta.validation-api'
+  implementation 'org.mapstruct:mapstruct:1.5.5.Final'
   implementation 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'

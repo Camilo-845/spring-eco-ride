@@ -18,12 +18,12 @@ import lombok.Data;
 public class Charge {
   @Id
   private UUID id;
-  private String paymentIntentId;
-  private Double amount;
-  private String currency;
-  private ChargeStatus status;
-
+  @Column("payment_intent_id")
+  private UUID paymentIntentId;
+  private String provider;
+  @Column("provider_ref")
+  private String providerRef;
   @CreatedDate
-  @Column("createdAt")
-  private Instant createdAt;
+  @Column("captured_at")
+  private Instant capturedAt;
 }

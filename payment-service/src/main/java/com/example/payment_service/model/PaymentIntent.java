@@ -14,21 +14,22 @@ import lombok.Data;
 
 @Data
 @Builder
-@Table("payment_intents")
+@Table("payments_intents")
 public class PaymentIntent {
 
   @Id
   private UUID id;
-  private String reservationId;
+  @Column("reservation_id")
+  private UUID reservationId;
   private Double amount;
   private String currency;
   private PaymentStatus status;
 
   @CreatedDate
-  @Column("createdAt")
+  @Column("created_at")
   private Instant createdAt;
 
   @LastModifiedDate
-  @Column("updatedAt")
+  @Column("updated_at")
   private Instant updatedAt;
 }

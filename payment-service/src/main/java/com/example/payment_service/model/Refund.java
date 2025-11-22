@@ -18,7 +18,7 @@ public class Refund {
   private UUID id;
   @Column("charge_id")
   private UUID chargeId;
-  private double amount;
+  private Double amount;
   private String reason;
   @Column("created_at")
   private Instant createdAt;

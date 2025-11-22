@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.payment_service.service.PaymentIntentService;
-import com.example.payment_service.dto.request.CreatePaymentIntent;
+import com.example.payment_service.dto.request.PaymentIntentRequest;
 import com.example.payment_service.dto.response.PaymentIntentResponse;
 
+import jakarta.validation.Valid;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -24,7 +25,7 @@ public class PaymentIntentController {
   }
 
   @PostMapping("/intents")
-  public Mono<PaymentIntentResponse> createPaymentIntent(@Valid @RequestBody CreatePaymentIntent request) {
+  public Mono<PaymentIntentResponse> createPaymentIntent(@Valid @RequestBody PaymentIntentRequest request) {
     return paymentIntentService.create(request);
   }
 

@@ -4,7 +4,7 @@ package com.example.payment_service.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.example.payment_service.dto.request.CreatePaymentIntent;
+import com.example.payment_service.dto.request.PaymentIntentRequest;
 import com.example.payment_service.dto.response.PaymentIntentResponse;
 import com.example.payment_service.model.PaymentIntent;
 
@@ -17,5 +17,5 @@ public interface PaymentIntentMapper {
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   @Mapping(target = "status", ignore = true)
-  PaymentIntent toEntity(CreatePaymentIntent createPaymentIntent);
+  PaymentIntent toEntity(PaymentIntentRequest createPaymentIntent);
 }

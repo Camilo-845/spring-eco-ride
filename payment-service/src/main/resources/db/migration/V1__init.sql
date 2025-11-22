@@ -1,24 +1,14 @@
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
-CREATE TYPE payment_intent_status AS ENUM (
-    'REQUIRES_ACTION', 
-    'AUTHORIZED', 
-    'CAPTURED', 
-    'FAILED', 
-    'PENDING'
-);
-
-CREATE TYPE charge_status AS ENUM (
-    'SUCCEEDED', 
-    'FAILED'
+CREATE TABLE IF NOT EXISTS payment_intent_status (
+  id SERIAL PRIMARY KEY ,
+  name VARCHAR(20) NOT NULL DEFAULT 'PENDING'
 );
 
 CREATE TABLE IF NOT EXISTS payments_intents (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  reservation_id UUID NOT NULL, -- Recomendación: usar snake_case para columnas
+  reservation_id UUID NOT NULL,
   amount DECIMAL(10, 2) NOT NULL,
   currency VARCHAR(3) NOT NULL,
-  status payment_intent_status NOT NULL DEFAULT 'PENDING',
+  status_id INTEGER NOT NULL REFERENCES payment_intent_status(id) ON DELETE SET NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -28,7 +18,6 @@ CREATE TABLE IF NOT EXISTS charges(
   payment_intent_id UUID NOT NULL REFERENCES payments_intents(id) ON DELETE CASCADE,
   provider VARCHAR(20) NOT NULL,
   provider_ref VARCHAR(50) NOT NULL,
-  charge_status charge_status NOT NULL,
   captured_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -39,3 +28,4 @@ CREATE TABLE IF NOT EXISTS refunds(
   reason VARCHAR(255),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+

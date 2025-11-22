@@ -4,11 +4,10 @@ import java.time.Instant;
 
 import org.springframework.stereotype.Service;
 
-import com.example.payment_service.dto.request.CreatePaymentIntent;
+import com.example.payment_service.dto.request.PaymentIntentRequest;
 import com.example.payment_service.dto.response.PaymentIntentResponse;
 import com.example.payment_service.mapper.PaymentIntentMapper;
 import com.example.payment_service.model.PaymentIntent;
-import com.example.payment_service.model.PaymentStatus;
 import com.example.payment_service.repository.PaymentIntentRepository;
 import com.example.payment_service.service.PaymentIntentService;
 
@@ -27,8 +26,9 @@ public class PaymentIntentServiceImpl implements PaymentIntentService {
   }
 
   @Override
-  public Mono<PaymentIntentResponse> create(CreatePaymentIntent paymentIntentRequest) {
+  public Mono<PaymentIntentResponse> create(PaymentIntentRequest paymentIntentRequest) {
     PaymentIntent paymentIntent = paymentIntentMapper.toEntity(paymentIntentRequest);
+    paymentIntent.setStatus(6);
     paymentIntent.setCreatedAt(Instant.now());
     paymentIntent.setUpdatedAt(Instant.now());
 
@@ -36,9 +36,8 @@ public class PaymentIntentServiceImpl implements PaymentIntentService {
   }
 
   @Override
-  public Mono<PaymentIntentResponse> update(String id) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'update'");
+  public Mono<PaymentIntentResponse> updateStatus(String id, Integer statusId) {
+    PaymentIntent paymentIntent = PaymentIntent.builder().status(statusId).build();
+    return paymentIntentRepository.save(paymentIntent).map(paymentIntentMapper::toDto);
   }
-
 }

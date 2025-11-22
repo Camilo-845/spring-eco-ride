@@ -14,5 +14,7 @@ public interface RefundMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "chargeId", ignore = true)
+  @Mapping(target = "reason", ignore = true)
   Refund toEntity(RefundRequest refundRequest);
 }

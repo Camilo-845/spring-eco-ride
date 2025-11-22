@@ -14,5 +14,6 @@ public interface ChargeMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "capturedAt", ignore = true)
+  @Mapping(target = "paymentIntentId", ignore = true)
   Charge toEntity(ChargeRequest chargeRequest);
 }

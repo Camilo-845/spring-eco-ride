@@ -23,7 +23,8 @@ public class PaymentIntent {
   private UUID reservationId;
   private Double amount;
   private String currency;
-  private PaymentStatus status;
+  @Column("status_id")
+  private Integer status;
 
   @CreatedDate
   @Column("created_at")

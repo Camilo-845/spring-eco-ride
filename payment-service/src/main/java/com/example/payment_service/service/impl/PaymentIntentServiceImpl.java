@@ -28,7 +28,7 @@ public class PaymentIntentServiceImpl implements PaymentIntentService {
   @Override
   public Mono<PaymentIntentResponse> create(PaymentIntentRequest paymentIntentRequest) {
     PaymentIntent paymentIntent = paymentIntentMapper.toEntity(paymentIntentRequest);
-    paymentIntent.setStatus(6);
+    paymentIntent.setStatus(5);
     paymentIntent.setCreatedAt(Instant.now());
     paymentIntent.setUpdatedAt(Instant.now());
 

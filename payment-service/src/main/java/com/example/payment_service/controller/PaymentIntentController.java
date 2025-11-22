@@ -40,14 +40,18 @@ public class PaymentIntentController {
   }
 
   @PostMapping("/capture/{intentId}")
-  public Mono<ChargeResponse> createCharge(@Valid @RequestBody ChargeRequest request, @PathVariable String intentId) {
-    Mono<ChargeResponse> charge = chargeService.create(intentId, request);
-    // Lanzar evento PaymentAuthorized se se confirmo el pago corretamente
-    return charge;
+  public Mono<ChargeResponse> createCharge(@PathVariable String intentId, @Valid @RequestBody ChargeRequest request) {
+    return chargeService.create(intentId, request)
+        .flatMap(chageConfirm -> {
+          paymentIntentService.updateStatus(intentId, 3);
+          // Lanzar evento PaymentAuthorized se se confirmo el pago corretamente
+
+          return Mono.just(chageConfirm);
+        });
   }
 
   @PostMapping("/refund/{chargeId}")
-  public Mono<RefundResponse> createRefund(@Valid @RequestBody RefundRequest request, @PathVariable String chargeId) {
+  public Mono<RefundResponse> createRefund(@PathVariable String chargeId, @Valid @RequestBody RefundRequest request) {
     return refundServie.create(chargeId, request);
   }
 

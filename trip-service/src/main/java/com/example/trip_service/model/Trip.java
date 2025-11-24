@@ -20,7 +20,7 @@ public class Trip {
   private UUID driverId;
   private Integer origin;
   private Integer destination;
-  private Instant start_time;
+  private Instant startTime;
   @Column("seats_total")
   private Integer seatsTotal;
   @Column("seats_available")

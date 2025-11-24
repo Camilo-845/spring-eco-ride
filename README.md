@@ -22,8 +22,8 @@ Plataforma de **carpooling corporativo**: conductores (empleados) publican rutas
     ```
 
 2.  **Levantar Microservicios y servicios de infraestructura**:
-    ```bash
-    docker-compose up -d --build
+    ```sh
+    docker compose up -d --build
     ```
 
 ## Uso de instancias de desarrollo
@@ -73,3 +73,9 @@ curl -X POST 'http://keycloak:8090/realms/ecoride/protocol/openid-connect/token'
 ```
 
 Teniendo un usuario previamente creado se pude remplazar los datos de la consulta y obtener los tokens
+
+## Referencias
+
+- [Spring oauth2](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html)
+- [Securing applications and services with OpenID Connect](https://www.keycloak.org/securing-apps/oidc-layers)
+- [Integrating Spring Cloud Gateway and React with Keycloak using Token Relay pattern](https://medium.com/@jancalve/integrating-spring-cloud-gateway-and-react-with-keycloak-using-token-relay-pattern-86f2a564fd16)

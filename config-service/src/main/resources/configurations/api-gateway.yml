@@ -9,3 +9,18 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KC_REALM_URI}
+  cloud:
+    gateway:
+      routes:
+        - id: trip-service
+          uri: ${TRIP_SERVICE_URI:http://trip-service:8080}
+          predicates:
+            - Path=/trips/**
+          filters:
+            - TokenRelay
+        - id: payment-service
+          uri: ${PAYMENT_SERVICE_URI:http://payment-service:8080}
+          predicates:
+            - Path=/payments/**
+          filters:
+            - TokenRelay

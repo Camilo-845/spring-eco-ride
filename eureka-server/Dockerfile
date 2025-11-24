@@ -7,4 +7,4 @@ RUN mvn clean package -DskipTests
 FROM amazoncorretto:21-alpine
 VOLUME /tmp
 COPY --from=build /app/target/*.jar config-server.jar
-ENTRYPOINT [ "java", "-jar", "/config-server.jar" ]
+ENTRYPOINT [ "java", "-jar", "/eureka-server.jar" ]

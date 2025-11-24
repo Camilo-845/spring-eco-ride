@@ -33,10 +33,13 @@ public class TripServiceImpl implements TripService {
   }
 
   @Override
-  public Mono<TripResponse> create(TripRequest tripRequest) {
+  public Mono<TripResponse> create(TripRequest tripRequest, String subId) {
+    // Verificar que el driver exista
+    //
     Trip trip = tripMapper.toEntity(tripRequest);
     trip.setCreatedAt(Instant.now());
     trip.setUpdatedAt(Instant.now());
+    trip.setSeatsAvailable(trip.getSeatsTotal());
 
     return tripRepository.save(trip)
         .map(tripMapper::toDto);

@@ -30,7 +30,9 @@ public class TripController {
 
   @PostMapping
   public Mono<TripResponse> createTrip(@Valid @RequestBody TripRequest request) {
-    return tripService.create(request);
+    // Se captura por el jwt
+    String subId = "temporal-sub_id";
+    return tripService.create(request, subId);
   }
 
   @GetMapping("/")

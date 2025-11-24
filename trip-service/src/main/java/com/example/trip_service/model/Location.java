@@ -16,8 +16,8 @@ public class Location {
   @Id
   private Integer id;
   private String name;
-  @Column("type_id")
-  private Integer type;
+  private Double latitude;
+  private Double longitude;
   @Column("created_at")
   private Instant createdAt;
   @Column("updated_at")

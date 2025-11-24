@@ -1,4 +1,7 @@
 package com.example.trip_service.controller.dto.response;
 
-public record TripResponse(String id) {
+import java.time.Instant;
+
+public record TripResponse(String id, String driverId, Long origin, Long destination, Instant startTime,
+    Integer seatsTotal, Integer seatsAvailable) {
 }

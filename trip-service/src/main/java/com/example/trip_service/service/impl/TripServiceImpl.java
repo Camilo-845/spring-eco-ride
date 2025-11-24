@@ -72,7 +72,7 @@ public class TripServiceImpl implements TripService {
   }
 
   @Override
-  public Flux<TripResponse> findByLocations(@NotNull Long origin, Long destination) {
+  public Flux<TripResponse> findByLocations(@NotNull Long origin, @NotNull Long destination) {
     Mono<LocationResponse> originLocation = locationService.getById(origin);
     Mono<LocationResponse> destinationLocation = locationService.getById(destination);
 

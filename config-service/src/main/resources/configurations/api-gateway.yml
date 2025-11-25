@@ -9,3 +9,10 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KC_REALM_URI}
+
+eureka:
+  instance:
+    hostname: ${spring.application.name}
+  client:
+    service-url:
+      defaultZone: http://eureka-server:${EUREKA_SERVER_PORT}/eureka

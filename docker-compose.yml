@@ -48,6 +48,7 @@ services:
     ports:
       - "${API_GATEWAY_PORT}:${API_GATEWAY_PORT}"
     environment:
+      EUREKA_SERVER_PORT: ${EUREKA_SERVER_PORT}
       CONFIG_SERVER_URI: "http://config-server:${CONFIG_SERVER_PORT}"
       API_GATEWAY_PORT: ${API_GATEWAY_PORT}
       KC_REALM_URI: "http://keycloak:${KC_PORT}/realms/ecoride"
@@ -63,6 +64,7 @@ services:
     ports:
       - "${PAYMENT_SERVICE_PORT}:${PAYMENT_SERVICE_PORT}"
     environment:
+      EUREKA_SERVER_PORT: ${EUREKA_SERVER_PORT}
       CONFIG_SERVER_URI: "http://config-server:${CONFIG_SERVER_PORT}"
       PAYMENT_SERVICE_PORT: ${PAYMENT_SERVICE_PORT}
       SPRING_R2DBC_URL: r2dbc:postgresql://payment-service-db:${PAYMENT_SERVICE_DB_PORT}/${PAYMENT_SERVICE_DB_NAME}
@@ -85,6 +87,7 @@ services:
       - "${TRIP_SERVICE_PORT}:${TRIP_SERVICE_PORT}"
     environment:
       CONFIG_SERVER_URI: "http://config-server:${CONFIG_SERVER_PORT}"
+      EUREKA_SERVER_PORT: ${EUREKA_SERVER_PORT}
       TRIP_SERVICE_PORT: ${TRIP_SERVICE_PORT}
       SPRING_R2DBC_URL: r2dbc:postgresql://trip-service-db:${TRIP_SERVICE_DB_PORT}/${TRIP_SERVICE_DB_NAME}
       SPRING_R2DBC_USERNAME: ${TRIP_SERVICE_DB_USER}
@@ -105,6 +108,7 @@ services:
     ports:
       - "${PASSAGER_SERVICE_PORT}:${PASSAGER_SERVICE_PORT}"
     environment:
+      EUREKA_SERVER_PORT: ${EUREKA_SERVER_PORT}
       CONFIG_SERVER_URI: "http://config-server:${CONFIG_SERVER_PORT}"
       PASSAGER_SERVICE_PORT: ${PASSAGER_SERVICE_PORT}
       SPRING_R2DBC_URL: r2dbc:postgresql://passager-service-db:${PASSAGER_SERVICE_DB_PORT}/${PASSAGER_SERVICE_DB_NAME}

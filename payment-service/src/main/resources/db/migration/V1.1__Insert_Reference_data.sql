@@ -3,5 +3,5 @@ INSERT INTO payment_intent_status (name) VALUES
 ('AUTHORIZED'), 
 ('CAPTURED'), 
 ('FAILED'), 
-('PENDING');
-('REFUND')
+('PENDING'),
+('REFUND');

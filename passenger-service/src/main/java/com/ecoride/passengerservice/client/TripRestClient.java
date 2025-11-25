@@ -14,7 +14,7 @@ public class TripRestClient {
     private final WebClient webClient;
 
     public TripRestClient(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("{URI_TRIP_SERVICE}").build();
+        this.webClient = webClientBuilder.baseUrl("http://trip-service").build();
     }
 
     public Mono<TripResponseDto> getTripById(String id) {

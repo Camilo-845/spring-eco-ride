@@ -64,6 +64,27 @@ services:
       trip-service-db:
         condition: service_healthy
 
+  passager-service:
+    build:
+      context: ./passenger-service
+    container_name: passager-service
+    ports:
+      - "${PASSAGER_SERVICE_PORT}:${PASSAGER_SERVICE_PORT}"
+    environment:
+      CONFIG_SERVER_URI: "http://config-server:${CONFIG_SERVER_PORT}"
+      PASSAGER_SERVICE_PORT: ${PASSAGER_SERVICE_PORT}
+      SPRING_R2DBC_URL: r2dbc:postgresql://passager-service-db:${PASSAGER_SERVICE_DB_PORT}/${PASSAGER_SERVICE_DB_NAME}
+      SPRING_R2DBC_USERNAME: ${PASSAGER_SERVICE_DB_USER}
+      SPRING_R2DBC_PASSWORD: ${PASSAGER_SERVICE_DB_PASS}
+      SPRING_FLYWAY_URL: jdbc:postgresql://passager-service-db:${PASSAGER_SERVICE_DB_PORT}/${PASSAGER_SERVICE_DB_NAME}
+      SPRING_FLYWAY_USER: ${PASSAGER_SERVICE_DB_USER}
+      SPRING_FLYWAY_PASSWORD: ${PASSAGER_SERVICE_DB_PASS}
+    depends_on:
+      config-server:
+        condition: service_started
+      passager-service-db:
+        condition: service_healthy
+
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
@@ -129,6 +150,22 @@ services:
         [
           "CMD-SHELL",
           "pg_isready -U ${PAYMENT_SERVICE_DB_USER} -d ${PAYMENT_SERVICE_DB_NAME}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  passager-service-db:
+    image: postgres:15
+    container_name: passager-service-db
+    environment:
+      POSTGRES_DB: ${PASSAGER_SERVICE_DB_NAME}
+      POSTGRES_USER: ${PASSAGER_SERVICE_DB_USER}
+      POSTGRES_PASSWORD: ${PASSAGER_SERVICE_DB_PASS}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${PASSAGER_SERVICE_DB_USER} -d ${PASSAGER_SERVICE_DB_NAME}",
         ]
       interval: 5s
       timeout: 5s

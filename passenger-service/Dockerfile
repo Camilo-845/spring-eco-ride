@@ -6,5 +6,5 @@ RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:21-alpine
 VOLUME /tmp
-COPY --from=build /app/target/*.jar config-server.jar
-ENTRYPOINT [ "java", "-jar", "/config-server.jar" ]
+COPY --from=build /app/target/*.jar passager-service.jar
+ENTRYPOINT [ "java", "-jar", "/passager-service.jar" ]

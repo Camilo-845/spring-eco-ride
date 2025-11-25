@@ -11,6 +11,9 @@ echo "Building module: api-gateway (in background)"
 echo "Building module: payment-service (in background)"
 (cd payment-service && ./gradlew bootJar -x test) &
 
+echo "Building module: passager-service (in background)"
+(cd passager-service && ./mvnw clean package -DskipTests &
+
 wait
 
 echo "Build completed"

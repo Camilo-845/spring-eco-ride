@@ -7,6 +7,40 @@ services:
       - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
     environment:
       CONFIG_SERVER_PORT: ${CONFIG_SERVER_PORT}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -q --tries=1 --timeout=2 http://localhost:${CONFIG_SERVER_PORT}/actuator/health || curl -f http://localhost:${CONFIG_SERVER_PORT}/actuator/health || exit 1",
+        ]
+      interval: 10s
+      timeout: 2s
+      retries: 10
+      start_period: 30s
+  eureka-server:
+    build:
+      context: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "${EUREKA_SERVER_PORT}:${EUREKA_SERVER_PORT}"
+    environment:
+      SERVER_PORT: ${EUREKA_SERVER_PORT}
+      CONFIG_SERVER_URI: "http://config-server:${CONFIG_SERVER_PORT}"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://eureka-server:${EUREKA_SERVER_PORT}/actuator/health",
+        ]
+      interval: 10s
+      timeout: 2s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      config-server:
+        condition: service_healthy
   api-gateway:
     build:
       context: ./api-gateway/

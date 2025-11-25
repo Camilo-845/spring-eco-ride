@@ -3,4 +3,3 @@ spring:
     name: eureka-server
   config:
     import: configserver:${CONFIG_SERVER_URI}
-

@@ -7,16 +7,6 @@ services:
       - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
     environment:
       CONFIG_SERVER_PORT: ${CONFIG_SERVER_PORT}
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "wget -q --tries=1 --timeout=2 http://localhost:${CONFIG_SERVER_PORT}/actuator/health || curl -f http://localhost:${CONFIG_SERVER_PORT}/actuator/health || exit 1",
-        ]
-      interval: 10s
-      timeout: 2s
-      retries: 10
-      start_period: 30s
   eureka-server:
     build:
       context: ./eureka-server
@@ -40,7 +30,7 @@ services:
       start_period: 30s
     depends_on:
       config-server:
-        condition: service_healthy
+        condition: service_started
   api-gateway:
     build:
       context: ./api-gateway/

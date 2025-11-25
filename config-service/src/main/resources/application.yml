@@ -1,5 +1,5 @@
 server:
-  port: ${CONFIG_SERVER_PORT}
+  port: ${config_server_port}
 
 spring:
   application:
@@ -15,3 +15,10 @@ spring:
         native:
           search-locations:
             - classpath:/configurations
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+      base-path: /actuator

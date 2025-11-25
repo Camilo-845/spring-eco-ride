@@ -1,0 +1,41 @@
+CREATE TABLE IF NOT EXISTS locations(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  latitude DECIMAL(10, 8),
+  longitude DECIMAL(11, 8),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS trip_status(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(20) NOT NULL UNIQUE
+);
+
+create table if not exists reservation_status(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(20) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS trips (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  driver_id UUID NOT NULL,
+  origin INTEGER NOT NULL REFERENCES locations(id) ON DELETE SET NULL,
+  destination INTEGER NOT NULL REFERENCES locations(id) ON DELETE SET NULL,
+  start_time TIMESTAMP NOT NULL,
+  seats_total INTEGER NOT NULL,
+  seats_available INTEGER NOT NULL,
+  price_per_seat DECIMAL(10, 2) NOT NULL,
+  status_id INTEGER NOT NULL REFERENCES trip_status(id) ON DELETE SET NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+create table if not exists reservations(
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  trip_id UUID NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+  passenger_id UUID NOT NULL,
+  status_id INTEGER NOT NULL REFERENCES reservation_status(id) ON DELETE SET NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

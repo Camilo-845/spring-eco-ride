@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: passager-service
+  config:
+    import: configserver:${CONFIG_SERVER_URI}

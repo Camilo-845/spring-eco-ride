@@ -63,6 +63,10 @@ services:
       SPRING_FLYWAY_URL: jdbc:postgresql://payment-service-db:${PAYMENT_SERVICE_DB_PORT}/${PAYMENT_SERVICE_DB_NAME}
       SPRING_FLYWAY_USER: ${PAYMENT_SERVICE_DB_USER}
       SPRING_FLYWAY_PASSWORD: ${PAYMENT_SERVICE_DB_PASS}
+      RABBIT_MQ_HOST: ${RABBIT_MQ_HOST}
+      RABBIT_MQ_PORT: ${RABBIT_MQ_PORT_AMQP}
+      RABBIT_MQ_USER: ${RABBIT_MQ_USER}
+      RABBIT_MQ_PASS: ${RABBIT_MQ_PASS}
     depends_on:
       config-server:
         condition: service_started
@@ -85,6 +89,10 @@ services:
       SPRING_FLYWAY_URL: jdbc:postgresql://trip-service-db:${TRIP_SERVICE_DB_PORT}/${TRIP_SERVICE_DB_NAME}
       SPRING_FLYWAY_USER: ${TRIP_SERVICE_DB_USER}
       SPRING_FLYWAY_PASSWORD: ${TRIP_SERVICE_DB_PASS}
+      RABBIT_MQ_HOST: ${RABBIT_MQ_HOST}
+      RABBIT_MQ_PORT: ${RABBIT_MQ_PORT_AMQP}
+      RABBIT_MQ_USER: ${RABBIT_MQ_USER}
+      RABBIT_MQ_PASS: ${RABBIT_MQ_PASS}
     depends_on:
       config-server:
         condition: service_started
@@ -107,6 +115,10 @@ services:
       SPRING_FLYWAY_URL: jdbc:postgresql://passager-service-db:${PASSAGER_SERVICE_DB_PORT}/${PASSAGER_SERVICE_DB_NAME}
       SPRING_FLYWAY_USER: ${PASSAGER_SERVICE_DB_USER}
       SPRING_FLYWAY_PASSWORD: ${PASSAGER_SERVICE_DB_PASS}
+      RABBIT_MQ_HOST: ${RABBIT_MQ_HOST}
+      RABBIT_MQ_PORT: ${RABBIT_MQ_PORT_AMQP}
+      RABBIT_MQ_USER: ${RABBIT_MQ_USER}
+      RABBIT_MQ_PASS: ${RABBIT_MQ_PASS}
     depends_on:
       config-server:
         condition: service_started
@@ -214,5 +226,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  rabbit-mq:
+    container_name: rabbit-mq
+    image: rabbitmq:3-management
+    ports:
+      - "${RABBIT_MQ_PORT_AMQP}:${RABBIT_MQ_PORT_AMQP}"
+      - "${RABBIT_MQ_PORT}:${RABBIT_MQ_PORT}"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_MQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_MQ_PASS}
 volumes:
   keycloak_data:

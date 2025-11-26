@@ -1,11 +1,13 @@
 package com.example.payment_service.service.impl;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import com.example.payment_service.dto.request.PaymentIntentRequest;
 import com.example.payment_service.dto.response.PaymentIntentResponse;
+import com.example.payment_service.exceptions.ApiException;
 import com.example.payment_service.mapper.PaymentIntentMapper;
 import com.example.payment_service.model.PaymentIntent;
 import com.example.payment_service.repository.PaymentIntentRepository;
@@ -39,5 +41,11 @@ public class PaymentIntentServiceImpl implements PaymentIntentService {
   public Mono<PaymentIntentResponse> updateStatus(String id, Integer statusId) {
     PaymentIntent paymentIntent = PaymentIntent.builder().status(statusId).build();
     return paymentIntentRepository.save(paymentIntent).map(paymentIntentMapper::toDto);
+  }
+
+  @Override
+  public Mono<PaymentIntentResponse> findById(UUID id) {
+    return paymentIntentRepository.findById(id)
+        .switchIfEmpty(Mono.error(new ApiException("paymentIntend not found"))).map(paymentIntentMapper::toDto);
   }
 }

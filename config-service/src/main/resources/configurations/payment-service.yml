@@ -29,10 +29,10 @@ spring:
         reservationRequested-in-0:
           destination: reservation.exchange
           group: payment-service
-        paymentAuthorized-out-0:
+        payment-out-0:
           destination: payment.exchange
-        paymentFailed-out-0:
-          destination: payment.exchange
+          producer:
+            exchangeType: topic
 
 eureka:
   instance:

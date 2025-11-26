@@ -30,9 +30,13 @@ spring:
           destination: reservation.exchange
           group: payment-service
         paymentAuthorized-out-0:
-          destination: payment.exchange
+          destination: payment.authorized.exchange
+          producer:
+            exchangeType: topic
         paymentFailed-out-0:
-          destination: payment.exchange
+          destination: payment.failed.exchange
+          producer:
+            exchangeType: topic
 
 eureka:
   instance:

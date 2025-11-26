@@ -1,0 +1,4 @@
+FROM amazoncorretto:21-alpine
+VOLUME /tmp
+COPY ./target/*.jar passager-service.jar
+ENTRYPOINT [ "java", "-jar", "/passager-service.jar" ]

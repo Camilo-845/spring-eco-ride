@@ -21,4 +21,5 @@ management:
       exposure:
         include:
           - health
+          - info
       base-path: /actuator

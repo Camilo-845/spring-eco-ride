@@ -11,7 +11,8 @@ import com.example.payment_service.dto.request.PaymentIntentRequest;
 @Service
 public class PaymentProducer {
 
-  private static final String PAYMENT_OUT_BINDING = "payment-out-0";
+  private static final String PAYMENT_AUTHORIZED_OUT_BINDING = "paymentAuthorized-out-0";
+  private static final String PAYMENT_FAILED_OUT_BINDING = "paymentFailed-out-0";
   private final StreamBridge streamBridge;
 
   public PaymentProducer(StreamBridge streamBridge) {
@@ -20,18 +21,16 @@ public class PaymentProducer {
 
   public boolean sendPaymentAuthorizedEvent(PaymentAuthorizedEvent event) {
     boolean sent = streamBridge.send(
-        PAYMENT_OUT_BINDING,
+        PAYMENT_AUTHORIZED_OUT_BINDING,
         MessageBuilder.withPayload(event)
-            .setHeader("spring.cloud.stream.sendto.destination", "payment.authorized") // Uso del header recomendado
             .build());
     return sent;
   }
 
   public boolean sendPaymentFailedEvent(PaymentFailedEvent event) {
     boolean sent = streamBridge.send(
-        PAYMENT_OUT_BINDING,
+        PAYMENT_FAILED_OUT_BINDING,
         MessageBuilder.withPayload(event)
-            .setHeader("spring.cloud.stream.sendto.destination", "payment.authorized") // Uso del header recomendado
             .build());
     return sent;
   }

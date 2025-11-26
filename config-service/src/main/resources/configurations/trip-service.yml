@@ -33,17 +33,11 @@ spring:
         reservationConfimedNotification-out-0:
           destination: notificaiton.exchange
         paymentAuthorized-in-0:
-          destination: payment.exchange
+          destination: payment.authorized.exchange
           group: payment-service-authorized
-          binder: rabbit
-          consumer:
-            bindingRoutingKey: payment.authorized
         paymentFailed-in-0:
-          destination: payment.exchange
+          destination: payment.failed.exchange
           group: payment-service-failed
-          binder: rabbit
-          consumer:
-            bindingRoutingKey: payment.failed
 
 eureka:
   instance:

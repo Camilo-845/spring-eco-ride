@@ -29,8 +29,12 @@ spring:
         reservationRequested-in-0:
           destination: reservation.exchange
           group: payment-service
-        payment-out-0:
-          destination: payment.exchange
+        paymentAuthorized-out-0:
+          destination: payment.authorized.exchange
+          producer:
+            exchangeType: topic
+        paymentFailed-out-0:
+          destination: payment.failed.exchange
           producer:
             exchangeType: topic
 

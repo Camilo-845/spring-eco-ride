@@ -6,17 +6,21 @@ import java.util.function.Consumer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.payment_service.dto.events.PaymentFailedEvent;
 import com.example.payment_service.dto.events.ReservationRequestEvent;
 import com.example.payment_service.dto.request.PaymentIntentRequest;
+import com.example.payment_service.messages.producers.PaymentProducer;
 import com.example.payment_service.service.PaymentIntentService;
 
 @Configuration
 public class ReservationRequestListener {
 
   private PaymentIntentService paymentIntentService;
+  private PaymentProducer paymentProducer;
 
-  public ReservationRequestListener(PaymentIntentService paymentIntentService) {
+  public ReservationRequestListener(PaymentIntentService paymentIntentService, PaymentProducer paymentProducer) {
     this.paymentIntentService = paymentIntentService;
+    this.paymentProducer = paymentProducer;
   }
 
   @Bean
@@ -29,7 +33,12 @@ public class ReservationRequestListener {
           .build();
       paymentIntentService.create(paymentIntentRequestDTO)
           .doOnError(throwable -> {
-            // TODO : Implementar manejo de fallo
+            PaymentFailedEvent failEvent = PaymentFailedEvent.builder()
+                .reservationId(event.reservationId())
+                .reason(throwable.getMessage())
+                .build();
+            paymentProducer.sendPaymentFailedEvent(failEvent);
+
           }).subscribe();
     };
   };

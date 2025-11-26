@@ -1,0 +1,3 @@
+FROM amazoncorretto:21-alpine
+COPY ./build/libs/*.jar payment-service.jar
+ENTRYPOINT [ "java", "-jar", "/payment-service.jar" ]

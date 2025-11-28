@@ -28,17 +28,19 @@ Plataforma de **carpooling corporativo**: conductores (empleados) publican rutas
 
 ## Uso de instancias de desarrollo
 
-Para hacer pruebas en local de forma más rapida que la construcción del docker-compose por defecto
+Para hacer pruebas en local de forma más rapida que la construcción del docker-compose por defecto, se puede hacer los build del local
 
-1. Ejecutar build de todos los servicios
+1. Asignarle el valor de `Dockerfile.dev` a la variable de entorno `DOCKERFILE_NAME`
+
+2. Ejecutar build de todos los servicios
 
    ```bash
    ./devTools/build-all-modules.sh
    ```
 
-2. Ejecutar docker-compose dedicado para dev
+3. Ejecutar docker compose
    ```bash
-   docker compose -f ./docker-compose.dev.yml up
+   docker compose up -d
    ```
 
 ### Obtener credenciales (tokens de acceso) para pruebas en desarrollo

@@ -16,4 +16,8 @@ public interface TripService {
   Flux<TripResponse> findByLocations(Long origin, Long destination);
 
   Mono<TripResponse> update(String id, TripRequest tripRequest);
+
+  Mono<Void> decrementSeats(String tripId);
+
+  Mono<Void> incrementSeats(String tripId);
 }

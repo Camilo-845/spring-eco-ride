@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.payment_service.dto.events.PaymentAuthorizedEvent;
 import com.example.payment_service.dto.events.PaymentFailedEvent;
 import com.example.payment_service.dto.events.ReservationRequestEvent;
 import com.example.payment_service.dto.request.PaymentIntentRequest;

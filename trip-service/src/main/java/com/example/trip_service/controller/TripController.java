@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,8 @@ import jakarta.validation.Valid;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RestController("/trips")
+@RestController
+@RequestMapping("/trips")
 public class TripController {
 
   private final TripService tripService;
@@ -28,7 +30,7 @@ public class TripController {
     this.reservationService = reservationService;
   }
 
-  @PostMapping
+  @PostMapping("/")
   public Mono<TripResponse> createTrip(@Valid @RequestBody TripRequest request) {
     // Se captura por el jwt
     String subId = "temporal-sub_id";
@@ -42,7 +44,7 @@ public class TripController {
     return tripService.findByLocations(origin, destination);
   }
 
-  @PostMapping("/trips/{tripId}/reservations")
+  @PostMapping("/{tripId}/reservations")
   public Mono<ReservationResponse> createReservation(@PathVariable String tripId) {
     // Se captura por el jwt
     String subId = "temporal-sub_id";

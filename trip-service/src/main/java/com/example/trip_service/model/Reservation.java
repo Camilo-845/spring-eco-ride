@@ -18,7 +18,7 @@ public class Reservation {
   private UUID id;
   @Column("trip_id")
   private UUID tripId;
-  @Column("passager_id")
+  @Column("passenger_id")
   private UUID passagerId;
   @Column("status_id")
   private Integer status;

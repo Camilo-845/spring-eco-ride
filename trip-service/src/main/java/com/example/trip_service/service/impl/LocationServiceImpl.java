@@ -22,9 +22,9 @@ public class LocationServiceImpl implements LocationService {
   private final LocationRepository locationRepository;
   private final LocationMapper locationMapper;
 
-  public LocationServiceImpl(LocationRepository locationRepository) {
+  public LocationServiceImpl(LocationRepository locationRepository, LocationMapper locationMapper) {
     this.locationRepository = locationRepository;
-    this.locationMapper = null;
+    this.locationMapper = locationMapper;
   }
 
   @Override

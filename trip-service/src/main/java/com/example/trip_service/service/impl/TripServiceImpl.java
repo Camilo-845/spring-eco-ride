@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.trip_service.controller.dto.request.TripRequest;
 import com.example.trip_service.controller.dto.response.LocationResponse;
 import com.example.trip_service.controller.dto.response.TripResponse;
+import com.example.trip_service.exceptions.ApiException;
 import com.example.trip_service.exceptions.ResourceNotFoundException;
 import com.example.trip_service.mapper.TripMapper;
 import com.example.trip_service.model.Trip;
@@ -34,12 +35,12 @@ public class TripServiceImpl implements TripService {
 
   @Override
   public Mono<TripResponse> create(TripRequest tripRequest, String subId) {
-    // Verificar que el driver exista
-    //
     Trip trip = tripMapper.toEntity(tripRequest);
     trip.setCreatedAt(Instant.now());
     trip.setUpdatedAt(Instant.now());
     trip.setSeatsAvailable(trip.getSeatsTotal());
+    trip.setDriverId(UUID.randomUUID());
+    trip.setStatusId(1);
 
     return tripRepository.save(trip)
         .map(tripMapper::toDto);
@@ -84,6 +85,33 @@ public class TripServiceImpl implements TripService {
           return tripRepository.findByOriginAndDestination(origin, destination)
               .map(tripMapper::toDto);
         });
+  }
+
+  @Override
+  public Mono<Void> decrementSeats(String tripId) {
+    return tripRepository.findById(UUID.fromString(tripId))
+        .switchIfEmpty(Mono.error(new ResourceNotFoundException("Trip", "id", tripId)))
+        .flatMap(trip -> {
+          if (trip.getSeatsAvailable() <= 0) {
+            return Mono.error(new ApiException("No available seats for trip " + tripId));
+          }
+          trip.setSeatsAvailable(trip.getSeatsAvailable() - 1);
+          trip.setUpdatedAt(Instant.now());
+          return tripRepository.save(trip);
+        })
+        .then();
+  }
+
+  @Override
+  public Mono<Void> incrementSeats(String tripId) {
+    return tripRepository.findById(UUID.fromString(tripId))
+        .switchIfEmpty(Mono.error(new ResourceNotFoundException("Trip", "id", tripId)))
+        .flatMap(trip -> {
+          trip.setSeatsAvailable(trip.getSeatsAvailable() + 1);
+          trip.setUpdatedAt(Instant.now());
+          return tripRepository.save(trip);
+        })
+        .then();
   }
 
 }

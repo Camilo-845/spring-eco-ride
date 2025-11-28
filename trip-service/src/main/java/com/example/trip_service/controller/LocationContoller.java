@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.trip_service.controller.dto.request.LocationRequest;
@@ -13,7 +14,8 @@ import com.example.trip_service.service.LocationService;
 import jakarta.validation.Valid;
 import reactor.core.publisher.Mono;
 
-@RestController("/locations")
+@RestController
+@RequestMapping("/locations")
 public class LocationContoller {
 
   private final LocationService locationService;

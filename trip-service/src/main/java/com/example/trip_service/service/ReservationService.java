@@ -12,4 +12,7 @@ public interface ReservationService {
 
   Flux<ReservationResponse> getByTrip(String tripId);
 
+  Mono<Void> updateStatusToConfirmed(String reservationId);
+
+  Mono<Void> updateStatusToCancelled(String reservationId);
 }

@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS drivers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     passenger_id UUID NOT NULL UNIQUE,
     license_no VARCHAR(50) NOT NULL UNIQUE,
+    car_plate VARCHAR(10) NOT NULL UNIQUE,
+    seats_offered INTEGER NOT NULL,
     verification_status BOOLEAN NOT NULL DEFAULT FALSE,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),

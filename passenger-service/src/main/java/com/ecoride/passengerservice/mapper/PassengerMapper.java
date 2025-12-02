@@ -8,7 +8,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface PassengerMapper {
 
-    Passenger toEntity(PassengerRequestDto passengerRequestDto);
-    PassengerResponseDto toDto(Passenger passenger);
+  Passenger toEntity(PassengerRequestDto passengerRequestDto);
+
+  PassengerResponseDto toDto(Passenger passenger);
 
 }

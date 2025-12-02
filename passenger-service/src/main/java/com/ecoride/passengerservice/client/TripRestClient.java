@@ -11,21 +11,21 @@ import reactor.core.publisher.Mono;
 @Service
 public class TripRestClient {
 
-    private final WebClient webClient;
+  private final WebClient webClient;
 
-    public TripRestClient(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://trip-service").build();
-    }
+  public TripRestClient(WebClient.Builder webClientBuilder) {
+    this.webClient = webClientBuilder.baseUrl("http://trip-service").build();
+  }
 
-    public Mono<TripResponseDto> getTripById(String id) {
-        return this.webClient.get()
-                .uri("/api/v1/trips/{id}", id)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError,
-                        resp -> Mono.error(new ResourceNotFoundException("Trip not found: " + id)))
-                .onStatus(HttpStatusCode::is5xxServerError,
-                        resp -> Mono.error(new ExternalServiceException("Trip service error")))
-                .bodyToMono(TripResponseDto.class);
-    }
+  public Mono<TripResponseDto> getTripById(String id) {
+    return this.webClient.get()
+        .uri("/api/v1/passengers/{id}", id)
+        .retrieve()
+        .onStatus(HttpStatusCode::is4xxClientError,
+            resp -> Mono.error(new ResourceNotFoundException("Trip not found: " + id)))
+        .onStatus(HttpStatusCode::is5xxServerError,
+            resp -> Mono.error(new ExternalServiceException("Trip service error")))
+        .bodyToMono(TripResponseDto.class);
+  }
 
 }

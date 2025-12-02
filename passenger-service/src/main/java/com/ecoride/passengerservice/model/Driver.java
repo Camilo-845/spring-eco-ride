@@ -15,22 +15,22 @@ import java.util.UUID;
 @Table("drivers")
 public class Driver {
 
-    @Id
-    private UUID id;
+  @Id
+  private UUID id;
 
-    @Column("passenger_id")
-    private UUID passengerId;
+  @Column("passenger_id")
+  private UUID passengerId;
 
-    @Column("license_no")
-    private String licenseNo;
+  @Column("license_no")
+  private String licenseNo;
 
-    @Column("car_plate")
-    private String carPlate;
+  @Column("car_plate")
+  private String carPlate;
 
-    @Column("seats_offered")
-    private Integer seatsOffered;
+  @Column("seats_offered")
+  private Integer seatsOffered;
 
-    @Column("verification_status")
-    private VerificationStatus verificationStatus;
+  @Column("verification_status")
+  private Boolean verificationStatus;
 
 }

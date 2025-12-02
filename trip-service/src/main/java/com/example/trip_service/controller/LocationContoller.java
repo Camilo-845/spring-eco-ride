@@ -24,7 +24,7 @@ public class LocationContoller {
     this.locationService = locationService;
   }
 
-  @PostMapping("/")
+  @PostMapping
   public Mono<LocationResponse> createLocation(@Valid @RequestBody LocationRequest request) {
     return locationService.create(request);
   }

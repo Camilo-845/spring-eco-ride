@@ -9,6 +9,26 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KC_REALM_URI}
+  cloud:
+    gateway:
+      routes:
+        - id: trip-service
+          uri: lb://TRIP-SERVICE
+          predicates:
+            - name: Path
+              args:
+                patterns:
+                  - "/trips/**"
+                  - "/reservations/**"
+                  - "/locations/**"
+        - id: passenger-service
+          uri: lb://PASSAGER-SERVICE
+          predicates:
+            - name: Path
+              args:
+                patterns:
+                  - "/api/v1/passengers/**"
+                  - "/api/v1/drivers-profile/**"
 
 eureka:
   instance:

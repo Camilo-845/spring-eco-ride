@@ -72,4 +72,12 @@ public class DriverServiceImpl implements DriverService {
         .flatMap(driver -> driverRepository.deleteById(uuid));
 
   }
+
+  @Override
+  public Mono<DriverResponseDto> getByPassengerId(String id) {
+    UUID uuid = UUID.fromString(id);
+    return driverRepository.findByPassengerId(uuid)
+        .switchIfEmpty(Mono.error(new ResourceNotFoundException("driver", "passengerId", id)))
+        .map(driverMapper::toDto);
+  }
 }

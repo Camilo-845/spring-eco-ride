@@ -30,14 +30,14 @@ public class TripController {
     this.reservationService = reservationService;
   }
 
-  @PostMapping("/")
+  @PostMapping
   public Mono<TripResponse> createTrip(@Valid @RequestBody TripRequest request) {
     // Se captura por el jwt
     String subId = "temporal-sub_id";
     return tripService.create(request, subId);
   }
 
-  @GetMapping("/")
+  @GetMapping
   public Flux<TripResponse> getByLocations(
       @RequestParam(name = "from") Long origin,
       @RequestParam(name = "to") Long destination) {

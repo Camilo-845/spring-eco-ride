@@ -4,9 +4,9 @@
 
   "roles": {
     "realm": [
-      { "name": "ROLE_DRIVER" },
-      { "name": "ROLE_PASSENGER" },
-      { "name": "ROLE_ADMIN" }
+      { "name": "DRIVER" },
+      { "name": "PASSENGER" },
+      { "name": "ADMIN" }
     ]
   },
 

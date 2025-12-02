@@ -3,6 +3,7 @@ package com.example.trip_service.clients;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.example.trip_service.clients.dto.response.DriverResponse;
 import com.example.trip_service.clients.dto.response.PassengerResponse;
 
 import reactor.core.publisher.Mono;
@@ -24,9 +25,16 @@ public class PassengerClient {
 
   public Mono<PassengerResponse> getBySubId(String subId) {
     return webClient.get()
-        .uri("/api/v1/passengers/me{subId}", subId)
+        .uri("/api/v1/passengers/me/{subId}", subId)
         .retrieve()
         .bodyToMono(PassengerResponse.class);
+  }
+
+  public Mono<DriverResponse> getByPassengerId(String id) {
+    return webClient.get()
+        .uri("/api/v1/drivers-profile/passenger/{id}", id)
+        .retrieve()
+        .bodyToMono(DriverResponse.class);
   }
 
 }

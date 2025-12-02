@@ -11,15 +11,14 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DriverRequestDto {
-    @NotNull(message = "Passenger ID cannot be null")
-    private String passengerId;
+  @NotNull(message = "Passenger ID cannot be null")
+  private String passengerId;
+  @NotBlank(message = "License number cannot be blank")
+  private String licenseNo;
 
-    @NotBlank(message = "License number cannot be blank")
-    private String licenseNo;
+  @NotBlank(message = "Car plate cannot be blank")
+  private String carPlate;
 
-    @NotBlank(message = "Car plate cannot be blank")
-    private String carPlate;
-
-    @Positive(message = "Seats offered must be greater than zero")
-    private Integer seatsOffered;
+  @Positive(message = "Seats offered must be greater than zero")
+  private Integer seatsOffered;
 }

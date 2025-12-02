@@ -1,8 +1,9 @@
 package com.example.trip_service.service.impl;
 
+import com.example.trip_service.clients.PassengerClient;
+import com.example.trip_service.clients.dto.response.PassengerResponse;
 import com.example.trip_service.controller.dto.response.ReservationResponse;
 import com.example.trip_service.controller.dto.response.TripResponse;
-import com.example.trip_service.exceptions.ApiException;
 import com.example.trip_service.exceptions.ResourceNotFoundException;
 import com.example.trip_service.mapper.ReservationMapper;
 import com.example.trip_service.messages.events.ReservationRequestEvent;
@@ -26,42 +27,41 @@ public class ReservationServiceImpl implements ReservationService {
   private final ReservationMapper reservationMapper;
   private final TripService tripService;
   private final ReservationProducer reservationProducer;
+  private final PassengerClient passengerClient;
 
   public ReservationServiceImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper,
-      TripService tripService, ReservationProducer reservationProducer) {
+      TripService tripService, ReservationProducer reservationProducer, PassengerClient passengerClient) {
     this.reservationRepository = reservationRepository;
     this.reservationMapper = reservationMapper;
     this.tripService = tripService;
     this.reservationProducer = reservationProducer;
+    this.passengerClient = passengerClient;
   }
 
   @Override
   public Mono<ReservationResponse> create(@NotNull String tripId, @NotNull String subId) {
-    UUID passengerId = UUID.fromString("c8a796fa-f88a-4f1d-b722-cea8326fd048"); // Placeholder
+    Mono<PassengerResponse> passengerMono = passengerClient.getBySubId(subId);
+    Mono<TripResponse> tripMono = tripService.findById(tripId);
 
-    return tripService.findById(tripId)
-        .flatMap(trip -> tripService.decrementSeats(trip.id())
-            .then(Mono.just(trip)))
-        .flatMap(trip -> {
+    return Mono.zip(passengerMono, tripMono)
+        .flatMap(result -> {
           Reservation reservation = Reservation.builder()
-              .tripId(UUID.fromString(trip.id()))
-              .passagerId(passengerId)
+              .tripId(UUID.fromString(result.getT2().id()))
+              .passagerId(result.getT1().id())
               .status(1) // PENDING status
               .createdAt(Instant.now())
               .updatedAt(Instant.now())
               .build();
-
           return reservationRepository.save(reservation)
               .doOnSuccess(savedReservation -> {
                 ReservationRequestEvent event = new ReservationRequestEvent(
                     savedReservation.getId().toString(),
-                    trip.id(),
+                    result.getT2().id(),
                     savedReservation.getPassagerId().toString(),
-                    trip.pricePerSeat());
+                    result.getT2().pricePerSeat());
                 reservationProducer.sendReservationRequestEvent(event);
               });
-        })
-        .map(reservationMapper::toDto);
+        }).map(reservationMapper::toDto);
   }
 
   @Override

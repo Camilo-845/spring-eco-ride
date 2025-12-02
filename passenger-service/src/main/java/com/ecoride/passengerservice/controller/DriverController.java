@@ -14,35 +14,39 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/drivers-profile")
 public class DriverController {
 
-    private final DriverService driverService;
+  private final DriverService driverService;
 
-    @PostMapping
-    public Mono<DriverResponseDto> create(
-            @Valid @RequestBody DriverRequestDto dto) {
-        return driverService.create(dto);
-    }
+  @PostMapping
+  public Mono<DriverResponseDto> create(
+      @Valid @RequestBody DriverRequestDto dto) {
+    return driverService.create(dto);
+  }
 
-    @GetMapping("/{id}")
-    public Mono<DriverResponseDto> getById(@PathVariable String id) {
-        return driverService.getById(id);
-    }
+  @GetMapping("/{id}")
+  public Mono<DriverResponseDto> getById(@PathVariable String id) {
+    return driverService.getById(id);
+  }
 
-    @GetMapping
-    public Flux<DriverResponseDto> getAll() {
-        return driverService.getAll();
-    }
+  @GetMapping
+  public Flux<DriverResponseDto> getAll() {
+    return driverService.getAll();
+  }
 
-    @PutMapping("/{id}")
-    public Mono<DriverResponseDto> update(
-            @PathVariable String id,
-            @Valid @RequestBody DriverRequestDto dto) {
-        return driverService.update(id, dto);
-    }
+  @GetMapping("/passenger/{id}")
+  public Mono<DriverResponseDto> getByPassengerId(@PathVariable String id) {
+    return driverService.getByPassengerId(id);
+  }
 
-    @DeleteMapping("/{id}")
-    public Mono<Void> delete(@PathVariable String id) {
-        return driverService.delete(id);
-    }
+  @PutMapping("/{id}")
+  public Mono<DriverResponseDto> update(
+      @PathVariable String id,
+      @Valid @RequestBody DriverRequestDto dto) {
+    return driverService.update(id, dto);
+  }
 
+  @DeleteMapping("/{id}")
+  public Mono<Void> delete(@PathVariable String id) {
+    return driverService.delete(id);
+  }
 
 }

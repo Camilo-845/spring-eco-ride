@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.example.trip_service.clients.PassengerClient;
+import com.example.trip_service.clients.dto.response.DriverResponse;
 import com.example.trip_service.controller.dto.request.TripRequest;
 import com.example.trip_service.controller.dto.response.LocationResponse;
 import com.example.trip_service.controller.dto.response.TripResponse;
@@ -26,24 +28,32 @@ public class TripServiceImpl implements TripService {
   private final TripRepository tripRepository;
   private final TripMapper tripMapper;
   private final LocationService locationService;
+  private final PassengerClient passengerClient;
 
-  public TripServiceImpl(TripRepository tripRepository, TripMapper tripMapper, LocationService locationService) {
+  public TripServiceImpl(TripRepository tripRepository, TripMapper tripMapper, LocationService locationService,
+      PassengerClient passengerClient) {
     this.tripRepository = tripRepository;
     this.tripMapper = tripMapper;
     this.locationService = locationService;
+    this.passengerClient = passengerClient;
   }
 
   @Override
   public Mono<TripResponse> create(TripRequest tripRequest, String subId) {
-    Trip trip = tripMapper.toEntity(tripRequest);
-    trip.setCreatedAt(Instant.now());
-    trip.setUpdatedAt(Instant.now());
-    trip.setSeatsAvailable(trip.getSeatsTotal());
-    trip.setDriverId(UUID.randomUUID());
-    trip.setStatusId(1);
+    Mono<DriverResponse> driverMono = passengerClient.getBySubId(subId)
+        .flatMap(passengerResponse -> passengerClient.getByPassengerId(passengerResponse.id().toString()));
 
-    return tripRepository.save(trip)
-        .map(tripMapper::toDto);
+    return driverMono.flatMap(driver -> {
+      Trip trip = tripMapper.toEntity(tripRequest);
+      trip.setCreatedAt(Instant.now());
+      trip.setUpdatedAt(Instant.now());
+      trip.setSeatsAvailable(trip.getSeatsTotal());
+      trip.setDriverId(driver.id());
+      trip.setStatusId(1); // status SCHEDULED
+
+      return tripRepository.save(trip)
+          .map(tripMapper::toDto);
+    });
   }
 
   @Override

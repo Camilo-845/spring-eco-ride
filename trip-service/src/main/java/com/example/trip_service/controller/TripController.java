@@ -1,5 +1,7 @@
 package com.example.trip_service.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,9 +33,8 @@ public class TripController {
   }
 
   @PostMapping
-  public Mono<TripResponse> createTrip(@Valid @RequestBody TripRequest request) {
-    // Se captura por el jwt
-    String subId = "temporal-sub_id";
+  public Mono<TripResponse> createTrip(@Valid @RequestBody TripRequest request, Principal principal) {
+    String subId = principal.getName();
     return tripService.create(request, subId);
   }
 
@@ -45,9 +46,8 @@ public class TripController {
   }
 
   @PostMapping("/{tripId}/reservations")
-  public Mono<ReservationResponse> createReservation(@PathVariable String tripId) {
-    // Se captura por el jwt
-    String subId = "temporal-sub_id";
+  public Mono<ReservationResponse> createReservation(@PathVariable String tripId, Principal principal) {
+    String subId = principal.getName();
     return reservationService.create(tripId, subId);
   }
 }

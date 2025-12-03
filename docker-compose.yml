@@ -113,6 +113,7 @@ services:
       RABBIT_MQ_PORT: ${RABBIT_MQ_PORT_AMQP}
       RABBIT_MQ_USER: ${RABBIT_MQ_USER}
       RABBIT_MQ_PASS: ${RABBIT_MQ_PASS}
+      KC_REALM_URI: "http://keycloak:${KC_PORT}/realms/ecoride"
     depends_on:
       config-server:
         condition: service_healthy

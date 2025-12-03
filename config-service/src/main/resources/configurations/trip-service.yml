@@ -39,6 +39,12 @@ spring:
           destination: payment.failed.exchange
           group: payment-service-failed
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KC_REALM_URI}
+
 eureka:
   instance:
     hostname: ${spring.application.name}

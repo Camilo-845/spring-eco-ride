@@ -11,6 +11,8 @@ spring:
           issuer-uri: ${KC_REALM_URI}
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay
       routes:
         - id: trip-service
           uri: lb://TRIP-SERVICE

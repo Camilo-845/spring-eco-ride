@@ -40,6 +40,8 @@ dependencies {
   implementation 'org.projectlombok:lombok:1.18.38'
   implementation 'org.springframework.cloud:spring-cloud-stream'
   implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
   annotationProcessor 'org.projectlombok:lombok'
   annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 	runtimeOnly 'org.postgresql:postgresql'

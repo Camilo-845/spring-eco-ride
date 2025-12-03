@@ -119,6 +119,8 @@ services:
         condition: service_healthy
       trip-service-db:
         condition: service_healthy
+      keycloak:
+        condition: service_healthy
 
   passager-service:
     build:

@@ -1,0 +1,4 @@
+FROM amazoncorretto:21-alpine
+VOLUME /tmp
+COPY ./target/*.jar notification-service.jar
+ENTRYPOINT [ "java", "-jar", "/notification-service.jar" ]

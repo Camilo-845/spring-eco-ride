@@ -16,7 +16,7 @@ services:
           "-q",
           "-O",
           "/dev/null",
-          "http://localhost:8888/actuator/health",
+          "http://localhost:${CONFIG_SERVER_PORT}/actuator/health",
           "--timeout=1",
         ]
       interval: 10s
@@ -37,9 +37,12 @@ services:
       test:
         [
           "CMD",
-          "curl",
-          "-f",
+          "wget",
+          "-q",
+          "-O",
+          "/dev/null",
           "http://localhost:${EUREKA_SERVER_PORT}/actuator/health",
+          "--timeout=1",
         ]
       interval: 10s
       timeout: 2s
@@ -149,6 +152,33 @@ services:
       passager-service-db:
         condition: service_healthy
 
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: ${DOCKERFILE_NAME}
+    container_name: notification-service
+    ports:
+      - "${NOTIFICATION_SERVICE_PORT}:${NOTIFICATION_SERVICE_PORT}"
+    environment:
+      EUREKA_SERVER_PORT: ${EUREKA_SERVER_PORT}
+      CONFIG_SERVER_URI: "http://config-server:${CONFIG_SERVER_PORT}"
+      NOTIFICATION_SERVICE_PORT: ${NOTIFICATION_SERVICE_PORT}
+      SPRING_R2DBC_URL: r2dbc:postgresql://notification-service-db:${NOTIFICATION_SERVICE_DB_PORT}/${NOTIFICATION_SERVICE_DB_NAME}
+      SPRING_R2DBC_USERNAME: ${NOTIFICATION_SERVICE_DB_USER}
+      SPRING_R2DBC_PASSWORD: ${NOTIFICATION_SERVICE_DB_PASS}
+      SPRING_FLYWAY_URL: jdbc:postgresql://notification-service-db:${NOTIFICATION_SERVICE_DB_PORT}/${NOTIFICATION_SERVICE_DB_NAME}
+      SPRING_FLYWAY_USER: ${NOTIFICATION_SERVICE_DB_USER}
+      SPRING_FLYWAY_PASSWORD: ${NOTIFICATION_SERVICE_DB_PASS}
+      RABBIT_MQ_HOST: ${RABBIT_MQ_HOST}
+      RABBIT_MQ_PORT: ${RABBIT_MQ_PORT_AMQP}
+      RABBIT_MQ_USER: ${RABBIT_MQ_USER}
+      RABBIT_MQ_PASS: ${RABBIT_MQ_PASS}
+    depends_on:
+      config-server:
+        condition: service_healthy
+      notification-service-db:
+        condition: service_healthy
+
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
@@ -230,6 +260,22 @@ services:
         [
           "CMD-SHELL",
           "pg_isready -U ${PASSAGER_SERVICE_DB_USER} -d ${PASSAGER_SERVICE_DB_NAME}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  notification-service-db:
+    image: postgres:15
+    container_name: notification-service-db
+    environment:
+      POSTGRES_DB: ${NOTIFICATION_SERVICE_DB_NAME}
+      POSTGRES_USER: ${NOTIFICATION_SERVICE_DB_USER}
+      POSTGRES_PASSWORD: ${NOTIFICATION_SERVICE_DB_PASS}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${NOTIFICATION_SERVICE_DB_USER} -d ${NOTIFICATION_SERVICE_DB_NAME}",
         ]
       interval: 5s
       timeout: 5s

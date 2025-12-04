@@ -19,6 +19,9 @@ build_module() {
   "payment-service")
     (cd ./payment-service && ./gradlew bootJar -x test)
     ;;
+  "notification-service")
+    (cd ./notification-service && ./mvnw clean package -DskipTests)
+    ;;
   "passenger-service")
     (cd ./passenger-service && ./mvnw clean package -DskipTests)
     ;;
@@ -70,4 +73,3 @@ if [ ${failures} -gt 0 ]; then
 else
   echo "All builds completed successfully."
 fi
-

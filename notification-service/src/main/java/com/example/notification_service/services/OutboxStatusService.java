@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 public interface OutboxStatusService {
   Flux<OutboxStatusResponse> getAll();
 
-  Mono<OutboxStatusResponse> getById();
+  Mono<OutboxStatusResponse> getById(Long id);
 
-  Mono<OutboxStatusResponse> getByName();
+  Mono<OutboxStatusResponse> getByName(String name);
 }

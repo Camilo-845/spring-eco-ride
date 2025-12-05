@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 public interface TemplateService {
   Flux<TemplateResponse> getALl();
 
-  Mono<TemplateResponse> getById();
+  Mono<TemplateResponse> getById(Long id);
 
   Mono<TemplateResponse> getByEventTypeAndChannel(Long eventType, Long channel);
 

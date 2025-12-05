@@ -14,7 +14,7 @@ public class Template {
   @Id
   private Long id;
   @Column("event_type")
-  private long eventType;
+  private Long eventType;
   private String subject;
   private String body;
   private Long channel;

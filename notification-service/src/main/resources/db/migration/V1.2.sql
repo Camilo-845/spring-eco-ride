@@ -1,0 +1,1 @@
+ALTER TABLE outboxes ADD COLUMN recipient VARCHAR(255) NOT NULL;

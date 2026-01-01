@@ -6,11 +6,11 @@ import com.example.notification_service.services.notification.NotificationSender
 
 import reactor.core.publisher.Mono;
 
-@Service
+@Service("email")
 public class EmailNotificationSender implements NotificationSender {
 
   @Override
-  public Mono<Void> send(String message, String recipient) {
+  public Mono<Void> send(String message, String recipient, String subject) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'send'");
   }

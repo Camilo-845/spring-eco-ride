@@ -1,6 +1,7 @@
 package com.example.notification_service.services.notification;
 
-public interface NotificationSender {
-  void send(String message, String recipient, String subject);
+import reactor.core.publisher.Mono;
 
+public interface NotificationSender {
+  Mono<Void> send(String message, String recipient);
 }

@@ -1,5 +1,17 @@
 spring:
   application:
     name: notification-service
+---
+spring:
   config:
+    activate:
+      on-profile: default
     import: configserver:${CONFIG_SERVER_URI}
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  cloud:
+    config:
+      enabled: false

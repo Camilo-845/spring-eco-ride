@@ -1,5 +1,7 @@
 package com.example.notification_service.services.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.example.notification_service.dtos.response.OutboxStatusResponse;
 import com.example.notification_service.exceptions.ResourceNotFoundException;
 import com.example.notification_service.mappers.OutboxStatusMapper;
@@ -9,6 +11,7 @@ import com.example.notification_service.services.OutboxStatusService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class OutboxStatusServiceImpl implements OutboxStatusService {
   private final OutboxStatusRepository outboxRepository;
   private final OutboxStatusMapper outboxMapper;

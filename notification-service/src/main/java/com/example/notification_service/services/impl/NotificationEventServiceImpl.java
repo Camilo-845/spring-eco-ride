@@ -1,5 +1,6 @@
 package com.example.notification_service.services.impl;
 
+import org.springframework.stereotype.Service;
 import com.example.notification_service.dtos.response.NotificationEventResponse;
 import com.example.notification_service.exceptions.ResourceNotFoundException;
 import com.example.notification_service.mappers.NotificationEventMapper;
@@ -9,6 +10,7 @@ import com.example.notification_service.services.NotificationEventService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class NotificationEventServiceImpl implements NotificationEventService {
   private final NotificationEventRepository notificationEventRepository;
   private final NotificationEventMapper notificationEventMapper;

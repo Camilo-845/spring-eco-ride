@@ -1,5 +1,6 @@
 package com.example.notification_service.services.impl;
 
+import org.springframework.stereotype.Service;
 import com.example.notification_service.dtos.request.TemplateRequest;
 import com.example.notification_service.dtos.response.ChannelResponse;
 import com.example.notification_service.dtos.response.NotificationEventResponse;
@@ -15,6 +16,7 @@ import com.example.notification_service.services.TemplateService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class TemplateServiceImpl implements TemplateService {
   private final TemplateRepository templateRepository;
   private final TemplateMapper templateMapper;

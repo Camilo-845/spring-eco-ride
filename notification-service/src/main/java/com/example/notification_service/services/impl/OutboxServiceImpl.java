@@ -2,6 +2,8 @@ package com.example.notification_service.services.impl;
 
 import java.time.Instant;
 
+import org.springframework.stereotype.Service;
+
 import com.example.notification_service.dtos.response.NotificationEventResponse;
 import com.example.notification_service.dtos.response.OutboxResponse;
 import com.example.notification_service.dtos.response.OutboxStatusResponse;
@@ -18,6 +20,7 @@ import com.example.notification_service.services.TemplateService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class OutboxServiceImpl implements OutboxService {
   private final OutboxRepository outboxRepository;
   private final OutboxMapper outboxMapper;

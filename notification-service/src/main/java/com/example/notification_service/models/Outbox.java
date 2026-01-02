@@ -28,5 +28,5 @@ public class Outbox {
   @Column("template_id")
   private Long templateId;
   private Integer retries;
-
+  private String recipient;
 }

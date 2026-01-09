@@ -31,6 +31,15 @@ spring:
                 patterns:
                   - "/api/v1/passengers/**"
                   - "/api/v1/drivers-profile/**"
+        - id: notification-service
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - name: Path
+              args:
+                patterns:
+                  - "/channels/**"
+                  - "/templates/**"
+                  - "/outboxes/**"
 
 eureka:
   instance:

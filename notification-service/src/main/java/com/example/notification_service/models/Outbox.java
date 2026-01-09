@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import io.r2dbc.postgresql.codec.Json;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,9 +16,7 @@ import lombok.Data;
 public class Outbox {
   @Id
   private Long id;
-  @Column("event_type")
-  private Long eventType;
-  private String payload;
+  private Json payload;
   private Long status;
   @Column("created_at")
   private Instant createdAt;

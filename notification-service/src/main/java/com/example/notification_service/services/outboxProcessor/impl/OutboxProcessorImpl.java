@@ -54,19 +54,17 @@ public class OutboxProcessorImpl implements OutboxProcessor {
   @Override
   public Mono<Void> processOutbox(Outbox outbox) {
     return templateService.getById(outbox.getTemplateId()).flatMap(template -> {
-      String body = templateRender.render(template.body(), outbox.getPayload());
-      String subject = templateRender.render(template.subject(), outbox.getPayload());
+      String body = templateRender.render(template.body(), outbox.getPayload().asString());
+      String subject = templateRender.render(template.subject(), outbox.getPayload().asString());
       return channelService.getById(template.channel()).flatMap(channel -> {
         NotificationSender sender = senders.get(channel.name().toLowerCase());
         if (sender == null) {
           return Mono.error(new RuntimeException("No sender found for channel: " + channel.name()));
         }
-        return sender.send(body, outbox.getRecipient(), subject)
+        return Mono.defer(() -> sender.send(body, outbox.getRecipient(), subject))
             .transformDeferred(RetryOperator.of(notificationRetry))
             .then(markAsSend(outbox))
-            .onErrorResume(e -> {
-              return handlePermanentFailure(outbox, e);
-            });
+            .onErrorResume(e -> handlePermanentFailure(outbox, e));
       });
     });
   }

@@ -23,7 +23,6 @@ public class OutboxSchedulerImpl implements OutboxScheduler {
         .flatMap(outbox -> {
           return outboxProcessor.processOutbox(outbox)
               .onErrorResume(e -> {
-                // Log de error en proceso
                 return Mono.empty();
               });
         }).subscribe();

@@ -1,4 +1,4 @@
-INSERT INTO channel (name) VALUES 
+INSERT INTO channels (name) VALUES 
 ('email'),
 ('sms'),
 ('push');
